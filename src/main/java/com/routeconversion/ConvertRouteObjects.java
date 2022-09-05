@@ -1,9 +1,9 @@
-package routeconversion;
+package com.routeconversion;
 /*
 Read  rtz files from "Routepath" convert to json and output as Route object to "route" file
  */
 
-import config.StaticVars;
+import com.config.StaticVars;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;

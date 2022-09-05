@@ -1,4 +1,4 @@
-package config;
+package com.config;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -8,13 +8,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class AisServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        ServerSocket echoSocket = new ServerSocket(8988);
+        int portNumber = Integer.parseInt(args[0]);
+
+        ServerSocket echoSocket = new ServerSocket(portNumber);
         Socket socket = echoSocket.accept();
 
         String[] HEADERS = { "mmsi","imo_nr","length","date_time_utc","lon","lat","sog","cog","true_heading","nav_status","message_nr"};
@@ -24,6 +27,7 @@ public class AisServer {
         while (true){
 
           File[] filesInDirectory = new File(StaticVars.dataAIS).listFiles();
+          Arrays.sort(filesInDirectory);
           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
           for(File f : filesInDirectory){

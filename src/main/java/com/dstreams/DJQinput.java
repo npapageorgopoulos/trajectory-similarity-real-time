@@ -1,11 +1,12 @@
-package dstreams;
+package com.dstreams;
 
-import config.CustomPartition;
-import config.StaticVars;
-import distancejoin.Point;
+import com.config.CustomPartition;
+import com.config.StaticVars;
+import com.distancejoin.Point;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkFiles;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.streaming.Durations;
@@ -18,7 +19,7 @@ import scala.Tuple3;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DJQ {
+public class DJQinput {
 
     public static void main(String[] args) throws InterruptedException {
         System.setProperty("hadoop.home.dir", "c:/hadoop");
@@ -40,7 +41,8 @@ public class DJQ {
         JavaPairDStream<Integer, String> records = inputData.mapToPair(record -> new Tuple2<>(1,record));
 
         //Waypoints and their replicates from local drive and remove of header
-        JavaRDD<String> wpInput = jssc.sparkContext().textFile(StaticVars.wpReplicatedSource);
+        String file = SparkFiles.get(args[0]);
+        JavaRDD<String> wpInput = jssc.sparkContext().textFile(file);
         String wpHeader = wpInput.first();
         JavaPairRDD<Integer, String> waypoints = wpInput.filter(wp -> !wp.equals(wpHeader))
                 .mapToPair(wp -> new Tuple2<>(1, wp));

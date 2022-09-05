@@ -1,4 +1,4 @@
-package config;
+package com.config;
 
 public class StaticVars {
     // Windows desktop

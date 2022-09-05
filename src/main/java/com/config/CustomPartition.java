@@ -1,4 +1,4 @@
-package config;
+package com.config;
 
 import org.apache.spark.Partitioner;
 import scala.Tuple3;

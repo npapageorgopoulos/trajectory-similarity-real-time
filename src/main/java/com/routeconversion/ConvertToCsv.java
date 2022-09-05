@@ -1,8 +1,8 @@
-package routeconversion;
+package com.routeconversion;
 /*
 Read objects from "route" and create/update routes.csv file for each row 1 waypoint, in order to have data for spark
  */
-import config.StaticVars;
+import com.config.StaticVars;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 

@@ -1,4 +1,4 @@
-package routeconversion;
+package com.routeconversion;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

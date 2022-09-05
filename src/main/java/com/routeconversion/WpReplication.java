@@ -1,7 +1,7 @@
-package routeconversion;
+package com.routeconversion;
 
-import config.StaticVars;
-import distancejoin.Waypoint;
+import com.config.StaticVars;
+import com.distancejoin.Waypoint;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;
@@ -83,9 +83,9 @@ public class WpReplication {
         );
 
 
-        JavaRDD<distancejoin.Waypoint> waypointsRDD = waypoints
+        JavaRDD<com.distancejoin.Waypoint> waypointsRDD = waypoints
                 .javaRDD() // transform dataframe to rdd of "Waypoint" objects
-                .map(row -> new distancejoin.Waypoint((String) row.get(0), (Integer) row.get(1), (Double) row.get(2), (Double) row.get(3), (Integer) row.get(4)));
+                .map(row -> new com.distancejoin.Waypoint((String) row.get(0), (Integer) row.get(1), (Double) row.get(2), (Double) row.get(3), (Integer) row.get(4)));
 
 //        waypointsRDD.foreach(wp -> {
 //            System.out.println(wp.toString());
@@ -94,11 +94,11 @@ public class WpReplication {
 
 
         //Creation of new RDD that has allocated waypoints and the replicated to the neighbour cells
-        JavaRDD<distancejoin.Waypoint> replicatedCellRDD = waypointsRDD.map(wp -> {
-            List<distancejoin.Waypoint> waypointList = new ArrayList<>();
+        JavaRDD<com.distancejoin.Waypoint> replicatedCellRDD = waypointsRDD.map(wp -> {
+            List<com.distancejoin.Waypoint> waypointList = new ArrayList<>();
 
             //push in each list the original waypoint
-            waypointList.add(new distancejoin.Waypoint(wp.getRoute_name(), wp.getWaypoint_id(), wp.getLatitude(), wp.getLongitude(), wp.getCell()));
+            waypointList.add(new com.distancejoin.Waypoint(wp.getRoute_name(), wp.getWaypoint_id(), wp.getLatitude(), wp.getLongitude(), wp.getCell()));
 
             int i = -1, j = -1; //for each cellId get its "coords" as 2 variables i and j
             for (int k = 0; k < StaticVars.xSeperations; ++k) {
@@ -113,7 +113,7 @@ public class WpReplication {
             for (int x = Math.max(0, i - 1); x <= Math.min(i + 1, StaticVars.xSeperations); x++) {
                 for (int y = Math.max(0, j - 1); y <= Math.min(j + 1, StaticVars.ySeperations); y++) {
                     if ((x < StaticVars.xSeperations && y < StaticVars.ySeperations) && (x != i || y != j)) {
-                        distancejoin.Waypoint waypoint = new distancejoin.Waypoint(wp.getRoute_name(), wp.getWaypoint_id(), wp.getLatitude(), wp.getLongitude(), cellNums[x][y]);
+                        com.distancejoin.Waypoint waypoint = new com.distancejoin.Waypoint(wp.getRoute_name(), wp.getWaypoint_id(), wp.getLatitude(), wp.getLongitude(), cellNums[x][y]);
                         waypointList.add(waypoint);
                     }
                 }
