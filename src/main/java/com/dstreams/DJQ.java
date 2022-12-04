@@ -15,23 +15,34 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import scala.Tuple2;
 import scala.Tuple3;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DJQ {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         System.setProperty("hadoop.home.dir", "c:/hadoop");
         Logger.getLogger("org.apache").setLevel(Level.WARN);
         Logger.getLogger("org.apache.spark.storage").setLevel(Level.ERROR);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+//        ServerSocket echoSocket = new ServerSocket(9999);
+//        Socket socket = echoSocket.accept();
+//        PrintWriter out =
 
         CustomPartition customPartitioner = new CustomPartition(StaticVars.xSeperations * StaticVars.ySeperations);
 
         SparkConf conf = new SparkConf()
                 .setMaster("local[*]")
                 .setAppName("real time trajectory similarity");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
 
         //listening on a TCP socket, every 10 sec
         JavaReceiverInputDStream<String> inputData = jssc.socketTextStream("localhost", 8988);
@@ -90,15 +101,17 @@ public class DJQ {
 
 //        result.foreachRDD( rdd -> System.out.println(rdd.getNumPartitions()));
 //        result.count().print();
-//        result.glom().print();
-//        result.print(100);
+        result.glom().print();
+//        result.print();
 
-        result.foreachRDD( rdd -> {
-            rdd.foreach( print -> {
-                Point p = print._2._1;
-                System.out.println( String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
-            });
-        });
+
+//        result.foreachRDD( rdd->{
+//            rdd.foreachAsync( print -> {
+//                Point p = print._2._1;
+//                System.out.println( String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
+////                new PrintWriter(socket.getOutputStream(),true).println(String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
+//            });
+//        } );
 
 
         jssc.start();              // Start the computation

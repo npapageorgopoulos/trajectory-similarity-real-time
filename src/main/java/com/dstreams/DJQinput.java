@@ -92,15 +92,15 @@ public class DJQinput {
 
 //        result.foreachRDD( rdd -> System.out.println(rdd.getNumPartitions()));
 //        result.count().print();
-//        result.glom().print();
+        result.glom().print();
 //        result.print(100);
 
-        result.foreachRDD( rdd -> {
-            rdd.foreach( print -> {
-                Point p = print._2._1;
-                System.out.println( String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
-            });
-        });
+//        result.foreachRDD( rdd -> {
+//            rdd.foreach( print -> {
+//                Point p = print._2._1;
+//                System.out.println( String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
+//            });
+//        });
 
 
         jssc.start();              // Start the computation

@@ -26,7 +26,7 @@ public class AisServer {
 
         while (true){
 
-          File[] filesInDirectory = new File(StaticVars.dataAIS).listFiles();
+          File[] filesInDirectory = new File(args[1]).listFiles();
           Arrays.sort(filesInDirectory);
           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -51,9 +51,9 @@ public class AisServer {
                           batchDate = recordDate;
                       }
 
-                      if (getDiffrenceInMins(batchDate,recordDate)>30){
+                      if (getDiffrenceInMins(batchDate,recordDate)>300){
                           batchDate = recordDate;
-                          Thread.sleep(10000);
+                          Thread.sleep(5000);
                       }
 
                       out.println(String.format(record.get("mmsi")+","+
@@ -71,7 +71,7 @@ public class AisServer {
                   }
               }
           }
-          Thread.sleep(10000);
+          Thread.sleep(5000);
       }
     }
 
