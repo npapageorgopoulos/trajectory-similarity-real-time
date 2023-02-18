@@ -1,4 +1,4 @@
-package com.config;
+package com.util;
 
 import java.io.*;
 import java.net.Socket;
@@ -17,6 +17,5 @@ public class ServerTest {
             while (true){
                 in.lines().forEach(line -> System.out.println(line));
             }
-
     }
 }

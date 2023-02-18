@@ -1,8 +1,8 @@
-package com.dstreams;
+package com.customstream;
 
-import com.config.CustomPartition;
+import com.util.CustomPartition;
 import com.config.StaticVars;
-import com.distancejoin.Point;
+import com.custom.Point;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -16,12 +16,7 @@ import scala.Tuple2;
 import scala.Tuple3;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,7 +37,7 @@ public class DJQ {
         SparkConf conf = new SparkConf()
                 .setMaster("local[*]")
                 .setAppName("real time trajectory similarity");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(1));
 
         //listening on a TCP socket, every 10 sec
         JavaReceiverInputDStream<String> inputData = jssc.socketTextStream("localhost", 8988);

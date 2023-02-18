@@ -1,4 +1,4 @@
-package com.config;
+package com.util;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -10,10 +10,45 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public class AisServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        int portNumber = Integer.parseInt(args[0]);
+
+        ServerSocket echoSocket = new ServerSocket(portNumber);
+        Socket socket = echoSocket.accept();
+
+        while (true){
+            File[] filesInDirectory = new File(args[1]).listFiles();
+            Arrays.sort(filesInDirectory);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            for(File f : filesInDirectory){
+                String filePath = f.getAbsolutePath();
+                String fileExtenstion = filePath.substring(filePath.lastIndexOf(".") + 1,filePath.length());
+                if("csv".equals(fileExtenstion)){
+                    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                        // Skip the first line (the header)
+                        br.readLine();
+                        Stream<String> lines = br.lines();
+                        lines.forEach(line -> {
+                            String value = line;
+//                            System.out.println(value);
+                            out.println(line);
+
+                        });
+                    } catch (IOException e) {
+                        System.out.println("Error reading file: " + filePath);
+                    }
+                }
+            }
+
+        }
+    }
+
+    public static void mainOld(String[] args) throws IOException, InterruptedException {
 
         int portNumber = Integer.parseInt(args[0]);
 

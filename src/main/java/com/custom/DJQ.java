@@ -1,4 +1,4 @@
-package com.distancejoin;
+package com.custom;
 
 import com.config.StaticVars;
 import org.apache.log4j.Level;

@@ -1,4 +1,4 @@
-package com.distancejoin;
+package com.custom;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
