@@ -105,8 +105,8 @@ public class LSEDTester {
 //
 //        // Print the distances to the console
 //        distances.print();
-
-        records.print();
+        wpInput.foreach(row -> System.out.println(row));
+//        records.print();
 
         // Start the Spark Streaming context
         jssc.start();
