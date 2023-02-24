@@ -1,4 +1,4 @@
-package com.custom;
+package com.distanceclustering;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

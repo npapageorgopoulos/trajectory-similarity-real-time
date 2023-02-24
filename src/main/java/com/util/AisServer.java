@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 public class AisServer {
 
+    //full stream non-stop
     public static void main(String[] args) throws IOException, InterruptedException {
         int portNumber = Integer.parseInt(args[0]);
 
@@ -47,7 +48,7 @@ public class AisServer {
 
         }
     }
-
+    //stream from excel depending on the datetime
     public static void mainOld(String[] args) throws IOException, InterruptedException {
 
         int portNumber = Integer.parseInt(args[0]);

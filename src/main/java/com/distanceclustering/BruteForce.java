@@ -1,4 +1,4 @@
-package com.custom;
+package com.distanceclustering;
 
 import com.config.StaticVars;
 import org.apache.log4j.Level;

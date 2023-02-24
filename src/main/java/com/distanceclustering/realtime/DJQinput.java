@@ -1,11 +1,12 @@
-package com.customstream;
+package com.distanceclustering.realtime;
 
 import com.util.CustomPartition;
 import com.config.StaticVars;
-import com.custom.Point;
+import com.distanceclustering.Point;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkFiles;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.streaming.Durations;
@@ -15,29 +16,23 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import scala.Tuple2;
 import scala.Tuple3;
 
-import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DJQ {
+public class DJQinput {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         System.setProperty("hadoop.home.dir", "c:/hadoop");
         Logger.getLogger("org.apache").setLevel(Level.WARN);
         Logger.getLogger("org.apache.spark.storage").setLevel(Level.ERROR);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-//        ServerSocket echoSocket = new ServerSocket(9999);
-//        Socket socket = echoSocket.accept();
-//        PrintWriter out =
 
         CustomPartition customPartitioner = new CustomPartition(StaticVars.xSeperations * StaticVars.ySeperations);
 
         SparkConf conf = new SparkConf()
                 .setMaster("local[*]")
                 .setAppName("real time trajectory similarity");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(1));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
 
         //listening on a TCP socket, every 10 sec
         JavaReceiverInputDStream<String> inputData = jssc.socketTextStream("localhost", 8988);
@@ -46,7 +41,8 @@ public class DJQ {
         JavaPairDStream<Integer, String> records = inputData.mapToPair(record -> new Tuple2<>(1,record));
 
         //Waypoints and their replicates from local drive and remove of header
-        JavaRDD<String> wpInput = jssc.sparkContext().textFile(StaticVars.wpReplicatedSource);
+        String file = SparkFiles.get(args[0]);
+        JavaRDD<String> wpInput = jssc.sparkContext().textFile(file);
         String wpHeader = wpInput.first();
         JavaPairRDD<Integer, String> waypoints = wpInput.filter(wp -> !wp.equals(wpHeader))
                 .mapToPair(wp -> new Tuple2<>(1, wp));
@@ -97,16 +93,14 @@ public class DJQ {
 //        result.foreachRDD( rdd -> System.out.println(rdd.getNumPartitions()));
 //        result.count().print();
         result.glom().print();
-//        result.print();
+//        result.print(100);
 
-
-//        result.foreachRDD( rdd->{
-//            rdd.foreachAsync( print -> {
+//        result.foreachRDD( rdd -> {
+//            rdd.foreach( print -> {
 //                Point p = print._2._1;
 //                System.out.println( String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
-////                new PrintWriter(socket.getOutputStream(),true).println(String.format("The vessel with MMSI %s is close to %s",p.getMmsi(),p.getRoute()));
 //            });
-//        } );
+//        });
 
 
         jssc.start();              // Start the computation

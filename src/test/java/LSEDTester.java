@@ -1,7 +1,7 @@
 import com.util.CustomPartition;
 import com.util.Point;
 import com.config.StaticVars;
-import com.custom.Waypoint;
+import com.distanceclustering.Waypoint;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;

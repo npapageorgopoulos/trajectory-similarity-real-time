@@ -1,5 +1,6 @@
-package com.lsed;
+package com.similaritymeasure.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Point implements Serializable {
+@AllArgsConstructor
+public class Point implements Serializable,Comparable<Point> {
 
     private Date datetime;
 //    private Double distance;
@@ -27,12 +29,17 @@ public class Point implements Serializable {
     @Override
     public String toString() {
         return "Point{" +
-                ", datetime=" + datetime +
+                "datetime=" + datetime +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", cellId=" + cellId +
                 ", trajectoryId=" + trajectoryId +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Point p) {
+        return Integer.compare(this.trajectoryId, p.trajectoryId);
     }
 }
 
