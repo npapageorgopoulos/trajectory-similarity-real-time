@@ -103,7 +103,7 @@ public class LockStepEuclideanDistance {
         JavaPairDStream<Tuple2<Integer, Integer>, Trajectory> trajectoryStream = mergedPoints
                 .mapToPair(p -> new Tuple2<>(new Tuple2<>(p.getTrajectoryId(), p.getCellId()), p))
                 .groupByKey(customPartitioner)
-                .mapValues(pointList -> new Trajectory(IteratorUtils.toList(pointList.iterator())));
+                .mapValues(pointList -> new Trajectory(IteratorUtils.toList(pointList.iterator()),pointList.iterator().next().getCellId()));
 
         JavaDStream<Tuple2<String, Tuple2<Trajectory, Trajectory>>> joined = trajectoryStream.transform(rdd ->
                 rdd.cartesian(rdd)

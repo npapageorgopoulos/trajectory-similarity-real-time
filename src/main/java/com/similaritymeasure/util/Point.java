@@ -21,9 +21,9 @@ public class Point implements Serializable,Comparable<Point> {
     private Integer cellId;
     private Integer trajectoryId;
 
-//    public void calculateDistance(Double x1, Double x2, Double y1 ,Double y2){
-//        setDistance(Math.hypot(x1-x2,y1-y2));
-//    }
+    public double distance(Point other){
+        return(Math.hypot(this.longitude-other.longitude,this.latitude- other.latitude));
+    }
 
 
     @Override
