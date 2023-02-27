@@ -34,7 +34,7 @@ public class LockStepEuclideanDistance {
         SparkConf conf = new SparkConf()
                 .setMaster("local[*]")
                 .setAppName("LockStepEuclideanDistance");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(3));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(1));
 
         // input from custom ais receiver
         JavaDStream<String> input = jssc.receiverStream(new AisReceiver())

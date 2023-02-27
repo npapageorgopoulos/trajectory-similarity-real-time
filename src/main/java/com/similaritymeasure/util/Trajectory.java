@@ -60,7 +60,7 @@ public class Trajectory implements Serializable {
                 }
             }
         }
-        return (double) lcs[n][m] / Math.min(n, m);
+        return (double) lcs[n][m] ;
     }
 
     @Override

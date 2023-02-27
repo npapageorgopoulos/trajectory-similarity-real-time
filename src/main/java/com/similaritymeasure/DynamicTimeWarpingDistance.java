@@ -34,7 +34,7 @@ public class DynamicTimeWarpingDistance {
         SparkConf conf = new SparkConf()
                 .setMaster("local[*]")
                 .setAppName("LockStepEuclideanDistance");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(3));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
 
         // input from custom ais receiver
         JavaDStream<String> input = jssc.receiverStream(new AisReceiver())
@@ -132,7 +132,7 @@ public class DynamicTimeWarpingDistance {
                 String idPair = pair._1();
                 Trajectory traj1 = pair._2()._1();
                 Trajectory traj2 = pair._2()._2();
-                double distance = traj1.dtwDistance(traj2);
+                double distance = traj1.lcsSimilarity(traj2);
                 System.out.println(idPair + ": " + distance);
             });
         });
